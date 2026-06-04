@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ناوەندی فێربوونی زمانی کوردی - فارسی</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        claret: {
+                            50: '#fdf2f4',
+                            100: '#fbe5ea',
+                            200: '#f7ced8',
+                            300: '#f1a9bc',
+                            400: '#e57b98',
+                            500: '#d44f74',
+                            600: '#bd3359',
+                            700: '#9e2244',
+                            800: '#831e3b',
+                            900: '#6e1d35',
+                            950: '#470d1e',
+                        },
+                        amberGold: '#D4AF37'
+                    },
+                    fontFamily: {
+                        sans: ['Vazirmatn', 'Tahoma', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #1e1b1c;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #831e3b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #470d1e;
+        }
+        /* Flashcard flipping animation */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .preserve-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+        /* PDF and Print Specific Styles */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                font-size: 12pt;
+                direction: rtl;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-layout {
+                display: block !important;
+                width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .print-card {
+                break-inside: avoid;
+                border: 1px solid #ddd !important;
+                background: white !important;
+                color: black !important;
+                box-shadow: none !important;
+                margin-bottom: 12px !important;
+                padding: 12px !important;
+                border-radius: 6px !important;
+            }
+            .print-grid {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 15px !important;
+            }
+            .tab-content-active {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-[#FAF7F2] text-slate-800 dark:bg-[#150f11] dark:text-slate-100 min-h-screen flex flex-col">
+
+    <!-- Header/Navigation Bar -->
+    <header class="bg-claret-950 text-white shadow-lg sticky top-0 z-50 no-print">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-amberGold text-claret-950 p-2.5 rounded-xl shadow-md">
+                    <i class="fa-solid fa-graduation-cap text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-bold tracking-wide">ناوەندی زمان و فەرهەنگ</h1>
+                    <p class="text-xs text-claret-200">کۆرسی فێربوونی خێرای زمانی کوردی ↔ فارسی</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3 flex-wrap">
+                <!-- Dark Mode Toggle -->
+                <button onclick="toggleDarkMode()" class="p-2.5 rounded-xl bg-claret-900 hover:bg-claret-800 transition-colors text-amberGold" title="گۆڕینی دۆخی شەو/ڕۆژ">
+                    <i id="theme-icon" class="fa-solid fa-moon text-lg"></i>
+                </button>
+                
+                <!-- Quick Print/Save PDF Button -->
+                <button onclick="triggerPrint()" class="flex items-center gap-2 bg-amberGold hover:bg-yellow-500 text-claret-950 font-bold px-4 py-2.5 rounded-xl shadow-md transition-all transform hover:scale-105">
+                    <i class="fa-solid fa-file-pdf text-lg"></i>
+                    <span>پاشەکەوتکردن بە PDF</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 py-8 w-full">
+        <!-- Dashboard Top Banner -->
+        <div class="bg-gradient-to-l from-claret-900 to-claret-700 rounded-3xl p-6 sm:p-8 text-white mb-8 shadow-xl relative overflow-hidden no-print">
+            <div class="absolute right-0 top-0 opacity-10 transform translate-x-12 -translate-y-6">
+                <i class="fa-solid fa-book-open text-9xl"></i>
+            </div>
+            <div class="relative z-10 max-w-2xl">
+                <span class="bg-claret-950 text-amberGold px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider">ئامادەکاری فێربوونی خێرا</span>
+                <h2 class="text-2xl sm:text-4xl font-extrabold mt-3 mb-2 leading-tight">پڕۆژەی فێربوونی کارلێکەری زمان</h2>
+                <p class="text-claret-100 text-sm sm:text-base mb-6 leading-relaxed">
+                    بەبێ پێویستی بە خشتەی وێرانکەر و کۆن، لێرەدا دەتوانیت بە مۆدێرنترین شێوازی کلاڕێت (Claret) دەست بە خوێندن بکەیت. وشەکان لە فلاشکارتدا تاقیبکەرەوە یان ڕاستەوخۆ دیارییەکەت پاشەکەوت بکە بۆ سەر مۆبایل و کۆمپیوتەرەکەت.
+                </p>
+                
+                <!-- Search inputs -->
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" id="search-bar" onkeyup="filterVocabulary()" placeholder="گەڕان بۆ وشە، پیشە، شوێن، یان دەستەواژەیەک (کوردی یان فارسی)..." 
+                           class="w-full pl-4 pr-12 py-3.5 bg-white text-slate-900 rounded-2xl focus:outline-none focus:ring-4 focus:ring-amberGold/50 placeholder-slate-400 shadow-inner text-sm sm:text-base">
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="flex flex-wrap gap-2.5 mb-8 no-print" id="tab-navigation">
+            <button onclick="switchTab('all')" id="tab-btn-all" class="tab-btn active px-4 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm bg-claret-800 text-white">
+                <i class="fa-solid fa-layer-group ml-1.5"></i> هەموو بەشەکان
+            </button>
+            <button onclick="switchTab('jobs')" id="tab-btn-jobs" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm bg-white text-slate-700 dark:bg-claret-950 dark:text-slate-300 hover:bg-claret-50 dark:hover:bg-claret-900/50">
+                <i class="fa-solid fa-briefcase ml-1.5"></i> ١. پیشە و کارەکان
+            </button>
+            <button onclick="switchTab('culture')" id="tab-btn-culture" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm bg-white text-slate-700 dark:bg-claret-950 dark:text-slate-300 hover:bg-claret-50 dark:hover:bg-claret-900/50">
+                <i class="fa-solid fa-earth-americas ml-1.5"></i> ٢. گەشت و فەرهەنگ
+            </button>
+            <button onclick="switchTab('grammar')" id="tab-btn-grammar" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm bg-white text-slate-700 dark:bg-claret-950 dark:text-slate-300 hover:bg-claret-50 dark:hover:bg-claret-900/50">
+                <i class="fa-solid fa-arrows-spin ml-1.5"></i> ٣. هاوواتا و دژواتا
+            </button>
+            <button onclick="switchTab('food')" id="tab-btn-food" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm bg-white text-slate-700 dark:bg-claret-950 dark:text-slate-300 hover:bg-claret-50 dark:hover:bg-claret-900/50">
+                <i class="fa-solid fa-utensils ml-1.5"></i> ٤. خۆراک و لێنان
+            </button>
+            <button onclick="switchTab('clothes')" id="tab-btn-clothes" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm bg-white text-slate-700 dark:bg-claret-950 dark:text-slate-300 hover:bg-claret-50 dark:hover:bg-claret-900/50">
+                <i class="fa-solid fa-shirt ml-1.5"></i> ٥. پۆشاک و جل
+            </button>
+            <button onclick="switchTab('time')" id="tab-btn-time" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm bg-white text-slate-700 dark:bg-claret-950 dark:text-slate-300 hover:bg-claret-50 dark:hover:bg-claret-900/50">
+                <i class="fa-solid fa-clock ml-1.5"></i> ٦. کاتەکان
+            </button>
+            <button onclick="switchTab('verbs')" id="tab-btn-verbs" class="tab-btn px-4 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm bg-white text-slate-700 dark:bg-claret-950 dark:text-slate-300 hover:bg-claret-50 dark:hover:bg-claret-900/50">
+                <i class="fa-solid fa-bolt ml-1.5"></i> ٧. کردارە گرنگەکان
+            </button>
+        </div>
+
+        <!-- Interactive Flashcard Widget -->
+        <section class="mb-12 no-print bg-white dark:bg-claret-950/20 border border-slate-200 dark:border-claret-900/40 rounded-3xl p-6 shadow-md">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <div>
+                    <h3 class="text-xl font-bold text-claret-900 dark:text-amberGold flex items-center gap-2">
+                        <i class="fa-solid fa-bolt-lightning text-amber-500"></i> فلاشکارتی کارلێکەر بۆ یارمەتی مێشک
+                    </h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">بۆ پیشاندانی وەرگێڕانەکە پەنجە لەسەر کارتەکە بدە تا وەرگەڕێت.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span id="card-counter" class="text-xs bg-claret-100 dark:bg-claret-900 text-claret-800 dark:text-claret-200 px-3 py-1.5 rounded-full font-bold">1 / 10</span>
+                </div>
+            </div>
+
+            <div class="flex justify-center items-center py-4">
+                <!-- Outer flip container -->
+                <div onclick="flipCard()" class="perspective-1000 w-full max-w-md h-56 cursor-pointer">
+                    <!-- Card inside -->
+                    <div id="flashcard-inner" class="preserve-3d duration-700 ease-in-out relative w-full h-full shadow-lg rounded-2xl bg-gradient-to-br from-claret-900 to-claret-950 text-white flex flex-col items-center justify-center p-6 text-center border-t-4 border-amberGold">
+                        
+                        <!-- Front Face -->
+                        <div class="backface-hidden absolute inset-0 flex flex-col items-center justify-center p-6">
+                            <span class="text-xs tracking-wider opacity-60 mb-2 uppercase" id="card-category">جۆری وشە</span>
+                            <h4 class="text-3xl font-bold leading-normal text-amberGold" id="card-front">کوردی لێرەیە</h4>
+                            <p class="text-xs mt-4 opacity-75 flex items-center gap-1.5">
+                                <i class="fa-solid fa-arrows-rotate"></i> بۆ بینینی فارسی لێرە بدە
+                            </p>
+                        </div>
+                        
+                        <!-- Back Face -->
+                        <div class="backface-hidden absolute inset-0 flex flex-col items-center justify-center p-6 rotate-y-180 bg-slate-900 border-t-4 border-emerald-500 rounded-2xl">
+                            <span class="text-xs tracking-wider text-emerald-400 mb-2">وەرگێڕانی فارسی</span>
+                            <h4 class="text-3xl font-bold text-white leading-normal" id="card-back">فارسی لێرەیە</h4>
+                            <p class="text-xs mt-4 opacity-50 flex items-center gap-1.5 text-slate-300">
+                                <i class="fa-solid fa-arrows-rotate"></i> کرتە بکە بۆ سوڕانەوەی سەرەتا
+                            </p>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-center gap-3 mt-6">
+                <button onclick="prevCard()" class="px-5 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 dark:bg-claret-900 dark:hover:bg-claret-800 dark:text-white rounded-xl transition-all font-bold text-sm">
+                    <i class="fa-solid fa-chevron-right ml-1"></i> پێشوو
+                </button>
+                <button onclick="nextCard()" class="px-5 py-2 bg-claret-700 hover:bg-claret-600 text-white rounded-xl transition-all font-bold text-sm">
+                    دواتر <i class="fa-solid fa-chevron-left mr-1"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- VOCABULARY VIEWER CONTAINER -->
+        <div id="vocabulary-content" class="print-layout">
+            <!-- Data is injected dynamically via JavaScript here to maintain a flawless interface -->
+        </div>
+
+        <!-- QUICK QUIZ SYSTEM -->
+        <section class="mt-12 bg-gradient-to-b from-claret-950 to-slate-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl no-print border border-claret-900/60">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="bg-amberGold text-claret-950 p-2.5 rounded-xl">
+                    <i class="fa-solid fa-gamepad text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold">خۆت تاقیبکەرەوە! (دەستەواژەی کوردی بۆ فارسی)</h3>
+                    <p class="text-xs text-claret-200">ئەمەی خوارەوە بە دروستی وەڵام بدەرەوە و ئاستی زمانی خۆت بەرز بکەرەوە.</p>
+                </div>
+            </div>
+
+            <div id="quiz-container" class="space-y-6">
+                <!-- Quiz card -->
+                <div class="bg-claret-900/30 p-5 rounded-2xl border border-claret-800/40">
+                    <h4 class="text-lg font-bold text-amberGold mb-4" id="quiz-question">بارکردنی پرسیار...</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5" id="quiz-options">
+                        <!-- Options injected dynamically -->
+                    </div>
+                </div>
+                
+                <div class="flex justify-between items-center flex-wrap gap-4">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-semibold text-claret-300">ئاستی دروستی:</span>
+                        <span id="quiz-score" class="bg-amberGold text-claret-950 px-3 py-1 rounded-full text-xs font-bold">٠ / ٠</span>
+                    </div>
+                    <button onclick="generateNextQuestion()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-md transition-all text-sm">
+                        دواتر یان گۆڕینی پرسیار <i class="fa-solid fa-angles-left mr-1"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-8 px-4 mt-12 border-t border-slate-800 text-center text-sm no-print">
+        <p class="text-amberGold font-bold mb-2">پرۆگرامی زیرەکی زمانەوانی کوردی - فارسی</p>
+        <p>نەخشێنراوە بە خۆشەویستییەوە بۆ هاوکاری خوێندکاران و لایەنگرانی زمان و ئەدەبیات.</p>
+        <p class="text-xs text-slate-600 mt-4">&copy; ٢٠٢٦ هەموو مافەکان پارێزراون.</p>
+    </footer>
+
+    <script>
+        // Data containing all Kurdish - Persian vocabularies with categorized structures
+        const vocabularyData = [
+            // CATEGORY 1: Jobs, Tools, Workplaces
+            { id: 1, cat: "jobs", group: "پۆلی گشتی پیشەکان", word: "پیشە / کار", trans: "شغل / کار", desc: "کار یان پیشەی فەرمی مرۆڤ" },
+            { id: 2, cat: "jobs", group: "پۆلی گشتی پیشەکان", word: "بێکار", trans: "بیکار", desc: "کەسێک کار دۆزەرەوە یان بێ دەستی کارە" },
+            { id: 3, cat: "jobs", group: "پۆلی گشتی پیشەکان", word: "خانەنشین", trans: "بازنشسته", desc: "کۆتاییهاتنی ماوەی خزمەت بەهۆی تەمەنەوە" },
+            { id: 4, cat: "jobs", group: "پۆلی گشتی پیشەکان", word: "ژنی ماڵەوە", trans: "خانه‌دار", desc: "بەڕێوەبەری کاروبارەکانی خێزان و ماڵ" },
+            { id: 5, cat: "jobs", group: "پۆلی گشتی پیشەکان", word: "فەرمانبەر", trans: "کارمند", desc: "ئەو کەسەی لە دامودەزگایەکی دەوڵەتی کار دەکات" },
+            { id: 6, cat: "jobs", group: "پۆلی گشتی پیشەکان", word: "مووچە / داهات", trans: "حقوق / درآمد", desc: "ئەو پارەیەی کەسەکە لە بەرانبەر کارەکەی وەریدەگرێت" },
+            { id: 7, cat: "jobs", group: "پۆلی گشتی پیشەکان", word: "داهات بەرز / پڕداهات", trans: "پردرآمد", desc: "کەسێک یان کارێک پارەیەکی زۆر دەستبخات" },
+            { id: 8, cat: "jobs", group: "پۆلی گشتی پیشەکان", word: "کەم داهات", trans: "کم‌درآمد", desc: "کەسێک یان پیشەیەک کە داهاتی کەم بێت" },
+            
+            // Core Jobs with Workplaces & Tools
+            { id: 9, cat: "jobs", group: "نانەوا (نانوا)", word: "نانەواخانە", trans: "نانوایی", desc: "شوێنی پێگەیشتن و برژاندنی نان", extra: "کارەکان: نان دەبرژێنێت (نان می‌پزد)" },
+            { id: 10, cat: "jobs", group: "شێوەکار (نقاش)", word: "بۆیاخچی (خانوو/بینا)", trans: "نقاش (خانه / ساختمان)", desc: "سەرقاڵی ڕازاندنەوە و دروستکردنی ڕەنگ", extra: "کەرستە: بۆیاخ، بۆیاخکردن (رنگ، رنگ کردن)" },
+            { id: 11, cat: "jobs", group: "بەرگدروو (خیاط)", word: "بەرگدرووخانە", trans: "خیاط‌خانه", desc: "شوێنی دوورینی پۆشاک و جلی مۆدێرن", extra: "کەرستەکان: مەتر، پارچە، مەقەس، دەزوو، دەرزی، چەرخی بەرگدروو (متر، پارچه، قیچی، نخ، سوزن، چرخ خیاطی)" },
+            { id: 12, cat: "jobs", group: "پزیشک (دکتر / پزشک)", word: "نەخۆشخانە / نۆرینگە", trans: "بیمارستان / مطب", desc: "چارەسەرکردن و فریاکەوتنی گشتی", extra: "کەرستەکان: دەرزی، دەرمان، سماعەی پزیشکی، ئامبوڵانس، چارەسەرکردن (آمپول، دارو، گوشی، آمبولانس، معالجه کردن)" },
+            { id: 13, cat: "jobs", group: "دارتاش (نجار)", word: "کارگەی دارتاشی", trans: "کارگاه نجاری", desc: "شوێنی دروستکردنی کەرستەی تەختە و دار", extra: "کەرستەکان: دار، چەکوش، مەشە، مەتر (چوب، چکش، اره، متر)" },
+            { id: 14, cat: "jobs", group: "باخەوان / جوتیار", word: "باخ / کێڵگە", trans: "باغ / مزرعه", desc: "شوێنی بەرهەمهێنان و چاندنی دانەوێڵە و درەخت", extra: "کەرستەکان: دار، گوڵ، ئاودان (درخت، گل، آب دادن)" },
+            { id: 15, cat: "jobs", group: "فڕۆکەوان (خلبان)", word: "فڕۆکەخانە", trans: "فرودگاه", desc: "شوێنی نیشتنەوە و فڕینی گشتی فڕۆکەکان", extra: "کەرستەکان: فڕۆکە، بیستۆک (هواپیما، هدفون)" },
+            { id: 16, cat: "jobs", group: "ئارایشگەر (آرایشگر)", word: "سەرتاشخانە", trans: "آرایشگاه", desc: "شوێنی ڕازاندنەوەی سەر و ڕووخسار", extra: "کەرستەکان: شانە، مەقەس، سشوار، کورتکردنەوەی قژ (شانه، قیچی، سشوار، مو کوتاه کردن)" },
+            { id: 17, cat: "jobs", group: "ئاگرکوژێنەوە (آتش‌نشان)", word: "بنکەی ئاگرکوژێنەوە", trans: "ایستگاه آتش‌نشانی", desc: "پاراستنی گیانی هاوڵاتیان لە ئاگر", extra: "کەرستەکان: ئاو، کوژاندنەوەی ئاگر (آب، آتش خاموش کردن)" },
+            { id: 18, cat: "jobs", group: "ژینگەپارێز / گسکدەر", word: "شەقام", trans: "خیابان", desc: "خاوێنکردنەوەی کایەکانی کۆمەڵگە", extra: "کەرستەکان: گسکدان / پاککردنەوە (جارو کردن)" },
+            { id: 19, cat: "jobs", group: "شیرینیەمەنی ساز", word: "شیرینیەمەنی", trans: "قنادی", desc: "ئامادەکردنی کێکی بەتام", extra: "کەرستەکان: شیرینی فرۆشتن (شیرینی فروختن)" },
+            { id: 20, cat: "jobs", group: "شۆفێر (راننده)", word: "ئۆتۆمبێل / پاس / تەکسی", trans: "ماشین / اتوبوس / تاکسی", desc: "گواستنەوەی سەرنشین", extra: "کەرستەکان: شۆفێریکردن (رانندگی کردن)" },
+            { id: 21, cat: "jobs", group: "مامۆستا (معلم)", word: "قوتابخانە / پۆل / زانکۆ", trans: "مدرسه / کلاس / دانشگاه", desc: "پێشکەشکردنی زانست", extra: "کەرستەکان: وانە گوتنەوە، قوتابی (درس دادن، دانش‌آموز)" },
+            { id: 22, cat: "jobs", group: "پۆلیس (پلیس)", word: "بنکەی پۆلیس", trans: "اداره پلیس", desc: "بەرجەستەکردنی ئاسایش", extra: "کەرستەکان: ئاسایش / یاسا (امنیت / قانون)" },
+            { id: 23, cat: "jobs", group: "وێنەگر (عکاس)", word: "سروشت", trans: "طبیعت", desc: "تۆمارکردنی دیمەنە بەپیتەکان", extra: "کەرستەکان: کامێرا، وێنەگرتن (دوربین، عکس گرفتن)" },
+            { id: 24, cat: "jobs", group: "ئەندازیار (مهندس)", word: "بینا / پرد", trans: "ساختمان / پل", desc: "نەخشاندنی شارستانیەت", extra: "کەرستەکان: دروستکردن / بنیاتنان (ساختن)" },
+            { id: 25, cat: "jobs", group: "پرۆگرامساز (برنامه‌نویس)", word: "کۆمپانیا", trans: "شرکت", desc: "دروستکردنی کۆد و نەرمەکاڵا", extra: "کەرستەکان: کۆمپیوتەر (کامپیوتر)" },
+            { id: 26, cat: "jobs", group: "زانا (دانشمند)", word: "تاقیگە / زانکۆ", trans: "آزمایشگاه / دانشگاه", desc: "لێکۆڵینەوە لەسەر بنەماکانی جیهان", extra: "کەرستەکان: کتێب خوێندنەوە (کتاب خواندن)" },
+            { id: 27, cat: "jobs", group: "میکانیک (مکانیک)", word: "وەرشە", trans: "تعمیرگاه", desc: "چاککردنەوەی ئامێرە قورسەکان", extra: "کەرستەکان: چاککردنەوەی ئامێر (تعمیر کردن)" },
+            { id: 28, cat: "jobs", group: "پێڵاوچاککەرەوە (کفاش)", word: "دوکانی پێڵاوچاککەرەوە", trans: "مغازه کفاشی", desc: "چاککردنی دەرەوەی پێڵاو", extra: "کەرستەکان: چاککردنەوەی پێڵاو (کفش تعمیر کردن)" },
+            { id: 29, cat: "jobs", group: "پارێزەر (وکیل)", word: "دادگا", trans: "دادگاه", desc: "داکۆکیکردن لە ڕووی یاساییەوە", extra: "کەرستەکان: بەرگریکردن لە مافی خەڵک (دفاع از حقوق مردم)" },
+            { id: 30, cat: "jobs", group: "سەربازی / سەرباز", word: "سەربازگە / سنوور", trans: "پادگان / مرز", desc: "پاراستنی نیشتمان لە هێرشبەران", extra: "کەرستەکان: بەرگریکردن لە نیشتمان (دفاع از کشور)" },
+            { id: 31, cat: "jobs", group: "وەرزشوان (ورزشکار)", word: "هۆڵی وەرزش (Gym)", trans: "باشگاه", desc: "بەرزکردنەوەی ئاستی هێزی جەستە", extra: "کەرستەکان: وەرزشکردن (ورزش کردن)" },
+            { id: 32, cat: "jobs", group: "ژمێریار (حسابدار)", word: "فەرمانگە / کۆمپانیا", trans: "اداره / شرکت", desc: "وردبینی دارایی و حیسابات", extra: "کەرستەکان: ژمێریاری (حساب و کتاب)" },
+            { id: 33, cat: "jobs", group: "نووسەر (نویسنده)", word: "کتێبخانە / ژوور", trans: "اتاق / کتابخانه", desc: "پەخشکردن و تۆمارکردنی کایەکانی ژیان", extra: "کەرستەکان: کتێب نووسین (کتاب نوشتن)" },
+            { id: 34, cat: "jobs", group: "پەرستار (پرستار)", word: "نەخۆشخانە", trans: "بیمارستان", desc: "منداڵدان و بەخێوکاری سەرەکی تەندروستی", extra: "کەرستەکان: چاودێریکردنی نەخۆشەکان (مراقبت از بیماران)" },
+            { id: 35, cat: "jobs", group: "بەڕێوەبەر (مدیر)", word: "فەرمانگە / کۆمپانیا", trans: "اداره / شرکت", desc: "پلانداڕژانی جوڵەی کارمەندان", extra: "کەرستەکان: بەڕێوەبردن (مدیریت کردن)" },
+
+            // CATEGORY 2: Travel, Sociology, Life Abroad
+            { id: 36, cat: "culture", group: "گەشت و ژیان", word: "وڵاتی دەرەوە", trans: "کشور خارجی", desc: "گەشت یان نیشتەجێبوون لە غەریبی" },
+            { id: 37, cat: "culture", group: "گەشت و ژیان", word: "کلتور / فەرهەنگ", trans: "فرهنگ", desc: "مێژووی ژیان و خووەکانی نەتەوەیەک" },
+            { id: 38, cat: "culture", group: "گەشت و ژیان", word: "دابونەریت", trans: "آداب و رسوم", desc: "یاسا نافەرمییە بەجێماوەکانی مێژوو" },
+            { id: 39, cat: "culture", group: "گەشت و ژیان", word: "پۆشاک (جلوبەرگ)", trans: "پوشش (لباس)", desc: "سیمای دەرەوەی خەڵک لە ڕووی جلەوە" },
+            { id: 40, cat: "culture", group: "گەشت و ژیان", word: "یاساکان", trans: "قوانین", desc: "دەستوورە مەدەنییەکانی دەوڵەت" },
+            { id: 41, cat: "culture", group: "گەشت و ژیان", word: "شوێنە گەشتیارییە سەرنجڕاکێشەکان", trans: "جاذبه‌های گردشگری", desc: "ئەو جێگایانەی بە سەرنجڕاکێش دادەنرێن بۆ گەشتیار" },
+            { id: 42, cat: "culture", group: "گەشت و ژیان", word: "کەشوهەوا", trans: "آب و هوا", desc: "سیستەمی باران، سەرما، و گەرمای ناوچەکە" },
+            { id: 43, cat: "culture", group: "گەشت و ژیان", word: "ئابووری و پارە", trans: "اقتصاد و پول", desc: "داهات، بەرزبوونەوەی نرخ و شێوازی کڕین" },
+            { id: 44, cat: "culture", group: "گەشت و ژیان", word: "سیاسەت", trans: "سیاست", desc: "بەرێوەبردنی وڵات لە ڕێگەی دەسەڵاتدارانەوە" },
+            { id: 45, cat: "culture", group: "گەشت و ژیان", word: "سەیر / نامۆ", trans: "عجیب", desc: "شتێک کە بە دەرەکی و نائاسایی بێتە بەرچاو" },
+            { id: 46, cat: "culture", group: "گەشت و ژیان", word: "هێمن و بەئارام", trans: "آرام و صبور", desc: "خووی مرۆڤی لەسەرخۆ" },
+            { id: 47, cat: "culture", group: "گەشت و ژیان", word: "قەرەباڵغ", trans: "شلوغ", desc: "بەرجەستەبوونی شوێنی زۆر پڕ لە مرۆڤ" },
+            { id: 48, cat: "culture", group: "گەشت و ژیان", word: "نەبڕانی کارەبا", trans: "قطع نشدن برق", desc: "مەدەنێتی و جێگیری تاقەت و وزە لە شوێنێکدا" },
+            { id: 49, cat: "culture", group: "گەشت و ژیان", word: "ئاژەڵی ماڵی (پشیلە، سەگ، تووتی، ماسی)", trans: "حیوانات خانگی (گربه، سگ، طوطی، ماهی)", desc: "ژینگەی هاوبەشی ژیان لەگەڵ گیانلەبەران" },
+            { id: 50, cat: "culture", group: "گەشت و ژیان", word: "یادەوەرییەکان / بیرەوەرییەکان", trans: "خاطرات", desc: "ڕووداوە پارێزراوەکانی ناو مێشک بۆ داهاتوو" },
+            { id: 51, cat: "culture", group: "گەشت و ژیان", word: "چێژبینین", trans: "لذت بردن", desc: "دڵخۆشبوون بە دەوروبەر و چرکەساتەکان" },
+            { id: 52, cat: "culture", group: "گەشت و ژیان", word: "گێڕانەوە", trans: "تعریف کردن", desc: "گێڕانەوەی بەسەرهات یان چیرۆکێک بۆ بەرانبەر" },
+            { id: 53, cat: "culture", group: "گەشت و ژیان", word: "سەرچاوە سروشتییەکان", trans: "منابع طبیعی", desc: "نەوت، غاز، ئاو و کانزاکانی سروشت" },
+            { id: 54, cat: "culture", group: "گەشت و ژیان", word: "دیاریی گەشت (سۆغاتی)", trans: "سوغات", desc: "ئەو کەلوپەلانەی پێشکەش دەکرێن دوای گەڕانەوە لە گەشت" },
+            { id: 55, cat: "culture", group: "گەشت و ژیان", word: "سەرەتایی", trans: "ابتدایی", desc: "بەراییترین تەمەنی خوێندنی فەرمی قوتابیان" },
+            { id: 56, cat: "culture", group: "گەشت و ژیان", word: "میهرەبان / دڵسۆز", trans: "مهربان", desc: "کەسێکی نەرمونیان و هەمیشە دەستگیر" },
+
+            // CATEGORY 3: Synonyms, Antonyms and Important verbs
+            { id: 57, cat: "grammar", group: "دژواتاکان", word: "پیس (بۆ هەوا یان ژینگە)", trans: "آلوده", desc: "بەرانبەری وشەی پاژەن و پاکژ (بۆ ژینگە)" },
+            { id: 58, cat: "grammar", group: "دژواتاکان", word: "پیس (بۆ جل یان شوێن)", trans: "کثیف", desc: "نەبوونی پاکوخاوێنی لەسەر فیزیکی دەرەوە" },
+            { id: 59, cat: "grammar", group: "دژواتاکان", word: "دابەزین (لە ئۆتۆمبێل)", trans: "پیاده شدن", desc: "خواربوونەوە لە پاس یان ئۆتۆمۆبیلەکان" },
+            { id: 60, cat: "grammar", group: "دژواتاکان", word: "سەرکەوتن (بۆ ناو ئۆتۆمبێل)", trans: "سوار شدن", desc: "چوونە ژوورەوە بۆ نێو هۆکاری گواستنەوە" },
+            { id: 61, cat: "grammar", group: "کردارە گرنگەکان", word: "سوپاسگوزاری کردن", trans: "تشکر کردن", desc: "دەربڕینی لوتف لە بەرانبەر چاکەیەک" },
+            { id: 62, cat: "grammar", group: "کردارە گرنگەکان", word: "تاریف کردن / ڕێز لێگرتن", trans: "تعارف کردن", desc: "نەریتی تەعاروفی ناسراوی ئێرانی" },
+            { id: 63, cat: "grammar", group: "کردارە گرنگەکان", word: "سەرسامبوون", trans: "تعجب کردن", desc: "حاڵەتێک کە بە هۆیەکی ناوازەوە مرۆڤ شۆک دەبێت" },
+            { id: 64, cat: "grammar", group: "دژواتاکان", word: "جیاوازی", trans: "تفاوت", desc: "لێکدووربوونی دوو تایبەتمەندی" },
+            { id: 65, cat: "grammar", group: "دژواتاکان", word: "لێکچوون", trans: "شباهت", desc: "هاوتا و تێکەڵبوونی دیمەنی دوو تەن یان شت" },
+            { id: 66, cat: "grammar", group: "کردارە گرنگەکان", word: "پێکەنین", trans: "خندیدن", desc: "دەربڕینی دڵخۆشی بە زەردەخەنە و دەنگ" },
+            { id: 67, cat: "grammar", group: "کردارە گرنگەکان", word: "ئامادەکردن / چاککردن", trans: "درست کردن (مانند غذا)", desc: "دروستکردنی پێداویستی پێش خواردن" },
+            { id: 68, cat: "grammar", group: "کردارە گرنگەکان", word: "بینین", trans: "دیدن", desc: "سەرنجدان بە چاوەکان لە دەوروبەر" },
+            { id: 69, cat: "grammar", group: "دەستەواژەکان", word: "کات نەبوونی کەسێک / سەرقاڵبوونی زۆر", trans: "سرِ کسی شلوغ بودن", desc: "نەبوونی دەرفەتی دەستبەکاربوونی کاتی نوێ" },
+            { id: 70, cat: "grammar", group: "کردارە گرنگەکان", word: "ڕاهاتن", trans: "عادت کردن", desc: "دروستبوونی خووییەکی نەگۆڕ لەگەڵ دۆخێک" },
+            { id: 71, cat: "grammar", group: "کردارە گرنگەکان", word: "پەلەکردن / پەلەبوونی هەبێت", trans: "عجله داشتن", desc: "خێراکردنی جوڵەکان بۆ کاتێکی کەم" },
+            { id: 72, cat: "grammar", group: "دەستەواژەکان", word: "خواردنی حازری", trans: "غذای حاضری", desc: "خواردنێک بە زوویی و بەبێ ماندووبوون ئامادە دەبێت" },
+            { id: 73, cat: "grammar", group: "تەعاروف", word: "شایەنی نییە", trans: "قابل ندارد", desc: "لە کاتی وەرگرتن یان گفتوگۆی پارەدا دەوترێت" },
+            { id: 74, cat: "grammar", group: "دەستەواژەکان", word: "کرێ", trans: "کرایه", desc: "بڕە پارەی پێدراو بۆ تەکسی یان خانوو" },
+            { id: 75, cat: "grammar", group: "کردارە گرنگەکان", word: "گفتوگۆ / چات", trans: "گفتگو", desc: "دوان و ئاڵوگۆڕکردنی ڕای نێوان دوو کەس" },
+            { id: 76, cat: "grammar", group: "دەستەواژەکان", word: "میواندۆست", trans: "مهمان‌نواز", desc: "کەسێک بەخێرهاتنی خەڵکی غەریب دەکات بە خۆشی" },
+            { id: 77, cat: "grammar", group: "کردارە گرنگەکان", word: "کات دیاریکردن / مۆڵەت وەرگرتن", trans: "وقت گرفتن", desc: "پەیوەندیکردن بە پزیشک یان پارێزەر بۆ چاوپێکەوتن" },
+            { id: 78, cat: "grammar", group: "دەستەواژەکان", word: "تێبینی یان یاداشتی ڕۆژانە", trans: "یادداشت روزانه", desc: "تۆمارکردنی بیرەوەرییەکان بە نووسین" },
+            { id: 79, cat: "grammar", group: "کردارە گرنگەکان", word: "فێربوون", trans: "یاد گرفتن", desc: "تۆمارکردنی زانیاری و بەهرەی نوێ لە مێشکدا" },
+            { id: 80, cat: "grammar", group: "دژواتاکان", word: "دوور لە ↔ نزیک لە", trans: "دور از ↔ نزدیک به", desc: "دووری و گەورەیی فیزیکی مەودا" },
+
+            // CATEGORY 4: Food and Cooking
+            { id: 81, cat: "food", group: "چێشت لێنان", word: "لێدانی خۆراک / چێشت لێنان", trans: "آشپزی کردن", desc: "هونەری تێکەڵکردنی کەرستەکان بە گەرمی" },
+            { id: 82, cat: "food", group: "چێشت لێنان", word: "بەتام / بەچێژ ↔ بێتام", trans: "خوشمزه ↔ بدمزه", desc: "دۆخی هەستی تامکردن لە دەمدا" },
+            { id: 83, cat: "food", group: "چێشت لێنان", word: "خۆش و بەتام", trans: "لذیذ", desc: "خواردنێکی نایاب لە تامی زۆر چاکدا" },
+            { id: 84, cat: "food", group: "چێشت لێنان", word: "قورس ↔ ئاسان", trans: "سخت ↔ آسان", desc: "پلەی دژواری ئامادەکردنی خۆراکەکان" },
+            { id: 85, cat: "food", group: "چێشت لێنان", word: "خەستبوونەوە و پێگەیشتنی تەواو", trans: "جا افتادن (غذا)", desc: "پێگەیشتن و یەکگرتنی گۆشت و نۆک لەناو شلەکەدا" },
+            { id: 86, cat: "food", group: "کەرستەکان", word: "پاقلەمەنییەکان", trans: "حبوبات", desc: "کۆمەڵێک دەنکە بژێوی وەک نیسک و فاسۆلیا" },
+            { id: 87, cat: "food", group: "کەرستەکان", word: "نیسک", trans: "عدس", desc: "دەنکێکی بچووکی بەنرخ لە دروستکردنی شۆربا" },
+            { id: 88, cat: "food", group: "کەرستەکان", word: "فاسۆلیا", trans: "لوبیا", desc: "لە پێکهاتە سەرەکییەکان بۆ خۆراکە کوردییەکان" },
+            { id: 89, cat: "food", group: "کەرستەکان", word: "نۆک", trans: "نخود", desc: "دانەیەکی گردی بەهێز بۆ دروستکردنی فەلافل یان قەیسی" },
+            { id: 90, cat: "food", group: "کەرستەکان", word: "پیاز", trans: "پیاز", desc: "کەرستەیەکی توند کە فرمێسک بە چاودا دەهێنێت کاتی جنین" },
+            { id: 91, cat: "food", group: "کەرستەکان", word: "سیر", trans: "سیر", desc: "کەرستەیەکی بەهێزی دەرمانی کە بۆنی توندە" },
+            { id: 92, cat: "food", group: "کەرستەکان", word: "سەوزە", trans: "سبزی", desc: "ڕووەکە بەهاری و تامی سەر مێزی نانخواردن" },
+            { id: 93, cat: "food", group: "کەرستەکان", word: "شیرینی", trans: "شیرینی", desc: "خواردنی شیرین دوای خوانی سەرەکی" },
+            { id: 94, cat: "food", group: "حاڵەتەکان", word: "برسی", trans: "گرسنه (جوعان)", desc: "ویستی دڵ بە توندی بۆ خواردنی ژەمێک" },
+            { id: 95, cat: "food", group: "حاڵەتەکان", word: "کولتووری / کۆن ↔ مۆدێرن / نوێ", trans: "سنتّی ↔ مدرن / جدید", desc: "شێوازی فەلسەفەی لێنان لە چێشتخانەکان" },
+            { id: 96, cat: "food", group: "کارەکان", word: "پاککردنەوە (وەک سەوزە)", trans: "پاک کردن", desc: "لێکردنەوەی پاشماوە و گەڵای کۆن بۆ پاکژکردنەوە" },
+            { id: 97, cat: "food", group: "کارەکان", word: "وردکردن (پیاز یان سەوزە)", trans: "خُرد کردن", desc: "دابەشکردنی پارچە گەورەکان بە مەقەس یان چەقۆ" },
+            { id: 98, cat: "food", group: "کارەکان", word: "سوورکردنەوە (لە ناو ڕۆندا)", trans: "سُرخ کردن", desc: "ئاڵکردن و گەرمکردنی کەرستە لە ناو تاوەدا" },
+            { id: 99, cat: "food", group: "کارەکان", word: "کوڵاندن یان سوورکردنەوە لە ناو ڕۆندا", trans: "پختن در روغن", desc: "تێکەڵەی زەیتی گەرم و خواردن" },
+            { id: 100, cat: "food", group: "کارەکان", word: "وشککردنەوە", trans: "خشک کردن", desc: "نەهێشتنی تەڕی و پاراستنی سەوزە بۆ زستان" },
+            { id: 101, cat: "food", group: "دەستەواژەکان", word: "کات بردن / درێژە کێشان", trans: "طول کشیدن / زمان بردن", desc: "ئەو پڕۆسەیەی کاتێکی زۆری دەوێت تا تەواو دەبێت" },
+            { id: 102, cat: "food", group: "دەستەواژەکان", word: "مۆم", trans: "شمع", desc: "داگیرساندنی ڕووناکی بچووک بۆ سەر خوانی ئێوارە" },
+            { id: 103, cat: "food", group: "دەستەواژەکان", word: "ڕووداوی سەرنجڕاکێش", trans: "اتفاق جالب", desc: "حاڵەتێکی کۆمیدی یان خۆش لە کاتی نانخواردندا" },
+
+            // CATEGORY 5: Clothing
+            { id: 104, cat: "clothes", group: "پۆشاکی دەرەوە", word: "جلی فەرمی", trans: "لباس رسمی", desc: "جلی گونجاو بۆ کۆبوونەوەکان" },
+            { id: 105, cat: "clothes", group: "پۆشاکی دەرەوە", word: "مانتۆ", trans: "مانتو", desc: "پۆشاکی درێژی ئافرەتان لە دەرەوە" },
+            { id: 106, cat: "clothes", group: "پۆشاکی دەرەوە", word: "پانتۆڵ", trans: "شلوار", desc: "پۆشینی قاچەکان بۆ پاراستن" },
+            { id: 107, cat: "clothes", group: "پۆشاکی دەرەوە", word: "لەچک / سەرپۆش", trans: "مقنعه / روسری", desc: "پۆشینی بەشی سەر بۆ خانمان" },
+            { id: 108, cat: "clothes", group: "پۆشاکی دەرەوە", word: "چاکەت و کراس", trans: "کت و پیراهن", desc: "جلی فەرمی تایبەت بە پیاوان و ئافرەتان" },
+            { id: 109, cat: "clothes", group: "پۆشاکی سووک", word: "تیشێرت", trans: "تیشرت", desc: "جلی فێنک و نیوە قۆڵ" },
+            { id: 110, cat: "clothes", group: "پۆشاکی خوارەوە", word: "گۆرەوی", trans: "جوراب", desc: "پۆشاکی پارێزەری پێست پێش پێڵاو" },
+            { id: 111, cat: "clothes", group: "پۆشاکی خوارەوە", word: "پێڵاو", trans: "کفش", desc: "کەرستەی سەرەکی بۆ ڕۆیشتن لەسەر زەوی" },
+
+            // CATEGORY 6: Time Adverbs
+            { id: 112, cat: "time", group: "کاتە کورتەکان", word: "ئەمڕۆ", trans: "امروز", desc: "ڕۆژی ئێستامان کە تێیدا دەژین" },
+            { id: 113, cat: "time", group: "کاتە کورتەکان", word: "ئەمشەو", trans: "امشب", desc: "شەوی ئەمڕۆی تێپەڕبوو" },
+            { id: 114, cat: "time", group: "کاتە درێژەکان", word: "ئەمساڵ", trans: "امسال", desc: "ماوەی دوازدە مانگی ئێستامان" },
+            { id: 115, cat: "time", group: "کاتە کورتەکان", word: "ئەمڕۆ بەیانی", trans: "امروز صبح", desc: "کاتژمێرەکانی بەرەبەیانی ئەمڕۆ" },
+            { id: 116, cat: "time", group: "کاتە ڕابردووەکان", word: "دوێنێ", trans: "دیروز", desc: "ڕۆژێک پێش ڕۆژی ئەمڕۆ" },
+            { id: 117, cat: "time", group: "کاتە ڕابردووەکان", word: "شەوی ڕابردوو", trans: "دیشب", desc: "شەوێک بەر لە ئەمشەو" },
+            { id: 118, cat: "time", group: "کاتە ڕابردووەکان", word: "پێرێ", trans: "پریروز", desc: "دوو ڕۆژ پێش کاتی ئێستا" },
+            { id: 119, cat: "time", group: "کاتە داهاتووەکان", word: "بەیانی (ڕۆژی داهاتوو)", trans: "فردا", desc: "ڕۆژی دوای ئەمڕۆ بە تەواوی" },
+            { id: 120, cat: "time", group: "ساتەکان", word: "ئێستا / لەم کاتەدا", trans: "حالا / الان / اکنون / در حال حاضر", desc: "ئەو چرکەیەی تێیدا کۆدەکە لێدەدرێت" },
+            { id: 121, cat: "time", group: "ساتەکان", word: "هەر ئەم ساتە", trans: "همین لحظه", desc: "دەستبەجێ بەبێ دواکەوتن" },
+            { id: 122, cat: "time", group: "ساتەکان", word: "هەمیشە / بەردەوام", trans: "همیشه / همواره", desc: "تەواوی مێژوو بە بەردەوامی" },
+            { id: 123, cat: "time", group: "ساتەکان", word: "هەر ڕۆژ / هەر شەو / هەر هەفتە / هەر ساڵ", trans: "هر روز / هر شب / هر هفته / هر سال", desc: "سیستەمی دووبارەبوونەوەی کات" },
+            { id: 124, cat: "time", group: "کاتە ڕابردووەکان", word: "پێشتر / لە ڕابردوودا", trans: "قبلاً / در گذشته", desc: "ڕووداوێک لە مێژوودا ڕوویداوە" },
+            { id: 125, cat: "time", group: "کاتە ڕابردووەکان", word: "هەفتەی پێشوو / مانگی پێشوو / ساڵی پێشوو", trans: "هفته پیش / ماه پیش / سال پیش", desc: "خولی کاتیی کۆتایی پێهاتوو" },
+
+            // CATEGORY 7: Important Verbs inside Sentences
+            { id: 126, cat: "verbs", group: "کردارە بنەڕەتییەکان", word: "خەوتن", trans: "خوابیدن (خواب)", desc: "پشوودانی مێشک بە شەوان" },
+            { id: 127, cat: "verbs", group: "کردارە بنەڕەتییەکان", word: "شتن (قاپ شتن)", trans: "شستن (شور - ظرف شستن)", desc: "خاوێنکردنەوە بە ئاو و سابوون" },
+            { id: 128, cat: "verbs", group: "کردارە بنەڕەتییەکان", word: "پۆشین / لەبەرکردن", trans: "پوشیدن (پوش)", desc: "لەبەرکردنی پۆشاک بە جوانی" },
+            { id: 129, cat: "verbs", group: "کردارە بنەڕەتییەکان", word: "گەیشتن", trans: "رسیدن (رس)", desc: "کۆتاییهاتنی گەشت و هاتنە ناو ماڵ" },
+            { id: 130, cat: "verbs", group: "کردارە بنەڕەتییەکان", word: "دانیشتن", trans: "نشستن (نشین)", desc: "پشوودانی جەستە لەسەر کورسی" },
+            { id: 131, cat: "verbs", group: "جوڵەکان", word: "هاتن", trans: "آمدن (آی)", desc: "جوڵەیەک بەرەو شوێنی ئێمە" },
+            { id: 132, cat: "verbs", group: "جوڵەکان", word: "چوون", trans: "رفتن (رو)", desc: "بەرەو دەرەوە ڕۆیشتن" },
+            { id: 133, cat: "verbs", group: "کردارە بنەڕەتییەکان", word: "چێشت لێنان", trans: "آشپزی کردن", desc: "دروستکردنی بژێوی توند بۆ نانخواردن" },
+            { id: 134, cat: "verbs", group: "هەستەکان", word: "گوێگرتن", trans: "گوش کردن", desc: "سەرنجدانی تەواو بە دەنگەکانی دەوروبەر" },
+            { id: 135, cat: "verbs", group: "هەستەکان", word: "سەیرکردن (فیلم یان تەلەفزیۆن)", trans: "تماشا کردن", desc: "سەرنجدانی شاشە بە چاوەکان" },
+            { id: 136, cat: "verbs", group: "پەیوەندی", word: "تەلەفۆن کردن / پەیوەندی کردن", trans: "تلفن کردن / زنگ زدن", desc: "قسەکردن بە مۆبایل لەگەڵ دۆستان" },
+            { id: 137, cat: "verbs", group: "خاوێنی", word: "شتنی ددان (مسواککردن)", trans: "مسواک زدن", desc: "پاککردنەوەی ناودەم بۆ تەندروستی" },
+            { id: 138, cat: "verbs", group: "خوێندن", word: "وانە خوێندن", trans: "درس خواندن", desc: "دەستبردن بۆ کایەکانی کتێب خوێندنەوە" },
+            { id: 139, cat: "verbs", group: "پیشە سازی", word: "دوورین (بەرگدروو)", trans: "دوختن (دوز)", desc: "پێکەوە گرێدانی پارچە پۆشاک" },
+            { id: 140, cat: "verbs", group: "پەیوەندی", word: "پرسیار کردن", trans: "پرسیدن / سؤال کردن", desc: "بەدواداچوونی تێنەگەیشتن بە دەنگ" },
+            { id: 141, cat: "verbs", group: "هەستەکان", word: "ترسانی", trans: "ترسیدن (ترس)", desc: "شۆکبوونی مێشک لە شتێکی تۆقێنەر" },
+            { id: 142, cat: "verbs", group: "ژمێریاری", word: "ژماردن (پارە ژماردن)", trans: "شمردن (شمار - پول شمردن)", desc: "ژماردنی دەستەواژەیی ژمارەکان" },
+            { id: 143, cat: "verbs", group: "پەیوەندی", word: "ناسین", trans: "شناختن (شناس)", desc: "پێشتر بینینی ڕووخسار یان زانین لەسەر مرۆڤێک" },
+            { id: 144, cat: "verbs", group: "پەیوەندی", word: "ناساندن", trans: "معرفی کردن", desc: "بەخشینی ناسنامەی هاوڕێیەک بە کەسێکی تر" },
+            { id: 145, cat: "verbs", group: "سروشت", word: "باران بارین", trans: "باریدن (بار - باران می‌بارد)", desc: "ڕژانی دلۆپەکانی ئاوی ئاسمان بەسەر زەویدا" },
+            { id: 146, cat: "verbs", group: "جوڵەکان", word: "هێنان", trans: "آوردن (آور)", desc: "بە دەستەوەگرتن و ڕاکێشانی کەرستەکان" },
+            { id: 147, cat: "verbs", group: "جوڵەکان", word: "مانەوە", trans: "ماندن (مان)", desc: "نەچوون و جێگیربوون لە هەمان ماڵدا" },
+            { id: 148, cat: "verbs", group: "پیشە سازی", word: "فرۆشتن", trans: "فروختن (فروش)", desc: "بەخشینی کاڵا لە بەرانبەر بڕە پارەیەک" },
+            { id: 149, cat: "verbs", group: "هەستەکان", word: "تووڕەبوون", trans: "عصبانی شدن", desc: "تێکچوونی باری دەروونی بەهۆی ڕووداوێکەوە" },
+            { id: 150, cat: "verbs", group: "پشوودان", word: "حەسانەوە / پشوودان", trans: "استراحت کردن", desc: "نەمانی ماندووبوون بە پاڵکەوتن" },
+            { id: 151, cat: "verbs", group: "سروشت", word: "کۆچکردن (بۆ باڵندە)", trans: "کوچ کردن", desc: "گۆڕینی شوێنی نیشتەجێبوون بەپێی وەرزەکان" },
+            { id: 152, cat: "verbs", group: "جوڵەکان", word: "بڵاوکردنەوە (فیلم)", trans: "پخش کردن", desc: "پەخشکردنی شەپۆلەکانی فیلم بە سەر شاشەدا" }
+        ];
+
+        let currentFlashcardIndex = 0;
+        let isFlashcardFlipped = false;
+        let selectedCategory = "all";
+        let quizScoreCorrect = 0;
+        let quizScoreTotal = 0;
+        let currentQuizAnswer = "";
+
+        window.onload = function() {
+            // Apply theme from storage if exists
+            if (localStorage.getItem('theme') === 'dark' || 
+                (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                updateThemeIcon(true);
+            } else {
+                document.documentElement.classList.remove('dark');
+                updateThemeIcon(false);
+            }
+            
+            // Build the dynamic layouts
+            renderVocabularyList();
+            updateFlashcard();
+            generateNextQuestion();
+        }
+
+        function toggleDarkMode() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            updateThemeIcon(isDark);
+        }
+
+        function updateThemeIcon(isDark) {
+            const icon = document.getElementById('theme-icon');
+            if (isDark) {
+                icon.className = 'fa-solid fa-sun text-lg';
+            } else {
+                icon.className = 'fa-solid fa-moon text-lg';
+            }
+        }
+
+        function renderVocabularyList() {
+            const contentDiv = document.getElementById('vocabulary-content');
+            contentDiv.innerHTML = ""; // Clear existing
+
+            // Get unique categories present
+            const categories = {
+                "jobs": { name: "١. پیشەکان، کەرستەکان و شوێنی کار (شغل‌ها، وسایل و مکان‌ها)", icon: "fa-briefcase" },
+                "culture": { name: "٢. گەشت، کۆمەڵناسی و ژیان لە دەرەوە (سفر و فرهنگ)", icon: "fa-earth-americas" },
+                "grammar": { name: "٣. هاوواتا، دژواتا و لێکدانی کردارە گرنگەکان (ترکیبات و متضادها)", icon: "fa-arrows-spin" },
+                "food": { name: "٤. خۆراک و ئامادەکردنی (غذا و آشپزی)", icon: "fa-utensils" },
+                "clothes": { name: "٥. پۆشاک و جلوبەرگ (لباس‌ها)", icon: "fa-shirt" },
+                "time": { name: "٦. کاتەکان و زاراوە کاتییەکان (قیدهای زمان)", icon: "fa-clock" },
+                "verbs": { name: "٧. کردارە گرنگەکانی ناو ڕستەکان (بن و ڕەگی کردارەکان)", icon: "fa-bolt" }
+            };
+
+            for (const [catKey, catValue] of Object.entries(categories)) {
+                // If filtering by tabs and not match, skip
+                if (selectedCategory !== "all" && selectedCategory !== catKey) continue;
+
+                // Filter items for this category
+                const items = vocabularyData.filter(item => item.cat === catKey);
+                if (items.length === 0) continue;
+
+                // Create category container
+                const catSection = document.createElement('section');
+                catSection.className = "mb-10 print-layout";
+                catSection.id = `section-${catKey}`;
+
+                // Header for Category
+                const header = document.createElement('div');
+                header.className = "border-r-4 border-claret-800 pr-3 mb-6 py-1 flex items-center justify-between";
+                header.innerHTML = `
+                    <div class="flex items-center gap-2.5">
+                        <i class="fa-solid ${catValue.icon} text-claret-800 dark:text-amberGold text-xl"></i>
+                        <h3 class="text-xl font-bold text-claret-950 dark:text-white">${catValue.name}</h3>
+                    </div>
+                    <span class="text-xs font-semibold bg-claret-100 dark:bg-claret-900 text-claret-900 dark:text-claret-200 px-3 py-1 rounded-full no-print">
+                        ${items.length} بەرهەم
+                    </span>
+                `;
+                catSection.appendChild(header);
+
+                // Create Modern Grid Container (No table!)
+                const grid = document.createElement('div');
+                grid.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 print-grid";
+
+                items.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = "vocab-card bg-white dark:bg-claret-950/40 p-5 rounded-2xl shadow-sm border border-slate-200/60 dark:border-claret-900/40 hover:shadow-md hover:border-claret-300 dark:hover:border-claret-700 transition-all flex flex-col justify-between print-card";
+                    card.setAttribute('data-word', item.word.toLowerCase());
+                    card.setAttribute('data-trans', item.trans.toLowerCase());
+                    card.setAttribute('data-group', item.group.toLowerCase());
+
+                    let extraBadge = "";
+                    if (item.extra) {
+                        extraBadge = `<div class="mt-2 text-xs bg-amberGold/10 text-amber-800 dark:text-amber-300 px-2.5 py-1 rounded-lg border border-amberGold/30">${item.extra}</div>`;
+                    }
+
+                    card.innerHTML = `
+                        <div>
+                            <div class="flex justify-between items-start gap-2 mb-2">
+                                <span class="text-xs font-bold text-claret-800 dark:text-amberGold bg-claret-50 dark:bg-claret-900/80 px-2.5 py-1 rounded-lg">
+                                    ${item.group}
+                                </span>
+                                <span class="text-xs text-slate-400">#${item.id}</span>
+                            </div>
+                            
+                            <div class="space-y-2 my-3">
+                                <div class="flex items-baseline gap-2">
+                                    <span class="text-xs text-slate-400 w-12 shrink-0">کوردی:</span>
+                                    <h4 class="text-lg font-bold text-claret-950 dark:text-white leading-tight">${item.word}</h4>
+                                </div>
+                                <div class="flex items-baseline gap-2">
+                                    <span class="text-xs text-slate-400 w-12 shrink-0">فارسی:</span>
+                                    <h4 class="text-lg font-bold text-emerald-700 dark:text-emerald-400 leading-tight" dir="rtl">${item.trans}</h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-t border-slate-100 dark:border-claret-900/40">
+                            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed italic">
+                                <i class="fa-solid fa-info-circle ml-1 opacity-70"></i>${item.desc}
+                            </p>
+                            ${extraBadge}
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+
+                catSection.appendChild(grid);
+                contentDiv.appendChild(catSection);
+            }
+        }
+
+        function switchTab(cat) {
+            selectedCategory = cat;
+            
+            // Update active state in tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn px-4 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm bg-white text-slate-700 dark:bg-claret-950 dark:text-slate-300 hover:bg-claret-50 dark:hover:bg-claret-900/50";
+            });
+
+            const activeBtn = document.getElementById(`tab-btn-${cat}`);
+            if (activeBtn) {
+                activeBtn.className = "tab-btn active px-4 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm bg-claret-800 text-white";
+            }
+
+            renderVocabularyList();
+            
+            // Re-sync with the search filter if query exists
+            filterVocabulary();
+        }
+
+        function filterVocabulary() {
+            const query = document.getElementById('search-bar').value.toLowerCase().trim();
+            const cards = document.querySelectorAll('.vocab-card');
+
+            cards.forEach(card => {
+                const word = card.getAttribute('data-word');
+                const trans = card.getAttribute('data-trans');
+                const group = card.getAttribute('data-group');
+
+                if (word.includes(query) || trans.includes(query) || group.includes(query)) {
+                    card.style.display = "flex";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+
+            // Hide empty category headers when filtering
+            const sections = document.querySelectorAll('#vocabulary-content > section');
+            sections.forEach(sec => {
+                const visibleCards = sec.querySelectorAll('.vocab-card[style*="display: flex"], .vocab-card:not([style*="display: none"])');
+                if (visibleCards.length === 0) {
+                    sec.style.display = "none";
+                } else {
+                    sec.style.display = "block";
+                }
+            });
+        }
+
+        function updateFlashcard() {
+            // Get random items or sequenced items to show
+            const card = vocabularyData[currentFlashcardIndex];
+            
+            // Unflip card first without animation break
+            const inner = document.getElementById('flashcard-inner');
+            inner.classList.remove('rotate-y-180');
+            isFlashcardFlipped = false;
+
+            // Wait brief moment for flip back transition before changing text
+            setTimeout(() => {
+                document.getElementById('card-category').innerText = card.group;
+                document.getElementById('card-front').innerText = card.word;
+                document.getElementById('card-back').innerText = card.trans;
+                document.getElementById('card-counter').innerText = `${currentFlashcardIndex + 1} / ${vocabularyData.length}`;
+            }, 150);
+        }
+
+        function flipCard() {
+            const inner = document.getElementById('flashcard-inner');
+            if (isFlashcardFlipped) {
+                inner.classList.remove('rotate-y-180');
+            } else {
+                inner.classList.add('rotate-y-180');
+            }
+            isFlashcardFlipped = !isFlashcardFlipped;
+        }
+
+        function nextCard() {
+            currentFlashcardIndex = (currentFlashcardIndex + 1) % vocabularyData.length;
+            updateFlashcard();
+        }
+
+        function prevCard() {
+            currentFlashcardIndex = (currentFlashcardIndex - 1 + vocabularyData.length) % vocabularyData.length;
+            updateFlashcard();
+        }
+
+        function generateNextQuestion() {
+            // Pick a random vocabulary item
+            const randomIndex = Math.floor(Math.random() * vocabularyData.length);
+            const questionItem = vocabularyData[randomIndex];
+            
+            currentQuizAnswer = questionItem.trans;
+
+            // Set question text
+            document.getElementById('quiz-question').innerText = `واتای وشەی " ${questionItem.word} " چییە لە زمانی فارسیدا؟`;
+
+            // Collect 3 other random options
+            let options = [questionItem.trans];
+            while (options.length < 4) {
+                const tempIndex = Math.floor(Math.random() * vocabularyData.length);
+                const potentialOption = vocabularyData[tempIndex].trans;
+                if (!options.includes(potentialOption)) {
+                    options.push(potentialOption);
+                }
+            }
+
+            // Shuffle options
+            options.sort(() => Math.random() - 0.5);
+
+            // Render options
+            const optionsDiv = document.getElementById('quiz-options');
+            optionsDiv.innerHTML = "";
+            
+            options.forEach(opt => {
+                const button = document.createElement('button');
+                button.className = "quiz-opt-btn bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700/60 p-4 rounded-xl text-right font-bold transition-all text-slate-100 flex items-center justify-between";
+                button.onclick = function() { checkQuizAnswer(this, opt); };
+                button.innerHTML = `<span>${opt}</span> <i class="fa-regular fa-circle text-xs opacity-40"></i>`;
+                optionsDiv.appendChild(button);
+            });
+        }
+
+        function checkQuizAnswer(selectedButton, selectedValue) {
+            // Disable all option buttons to prevent double clicking
+            const buttons = document.querySelectorAll('.quiz-opt-btn');
+            buttons.forEach(btn => btn.disabled = true);
+
+            quizScoreTotal++;
+
+            if (selectedValue === currentQuizAnswer) {
+                selectedButton.className = "quiz-opt-btn bg-emerald-600 border-emerald-500 p-4 rounded-xl text-right font-bold transition-all text-white flex items-center justify-between";
+                selectedButton.querySelector('i').className = "fa-solid fa-circle-check text-white";
+                quizScoreCorrect++;
+                showNotification("وەڵامی دروست! دەستخۆش", "success");
+            } else {
+                selectedButton.className = "quiz-opt-btn bg-rose-600 border-rose-500 p-4 rounded-xl text-right font-bold transition-all text-white flex items-center justify-between";
+                selectedButton.querySelector('i').className = "fa-solid fa-circle-xmark text-white";
+                
+                // Highlight the correct one
+                buttons.forEach(btn => {
+                    if (btn.innerText.trim() === currentQuizAnswer) {
+                        btn.className = "quiz-opt-btn bg-emerald-600/70 border-emerald-500 p-4 rounded-xl text-right font-bold transition-all text-white flex items-center justify-between";
+                        btn.querySelector('i').className = "fa-solid fa-circle-check text-white";
+                    }
+                });
+                showNotification("وەڵامەکە هەڵەیە! زیاتر هەوڵبدە", "error");
+            }
+
+            document.getElementById('quiz-score').innerText = `${quizScoreCorrect} / ${quizScoreTotal}`;
+        }
+
+        // Custom non-blocking message toast instead of alert()
+        function showNotification(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `fixed bottom-5 left-5 px-5 py-3.5 rounded-xl text-white font-bold text-sm shadow-xl transition-all duration-300 z-50 transform translate-y-10 opacity-0 flex items-center gap-2 ${
+                type === 'success' ? 'bg-emerald-600' : 'bg-rose-600'
+            }`;
+            toast.innerHTML = `
+                <i class="${type === 'success' ? 'fa-solid fa-check-circle' : 'fa-solid fa-triangle-exclamation'}"></i>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(toast);
+            
+            // Animate in
+            setTimeout(() => {
+                toast.classList.remove('translate-y-10', 'opacity-0');
+            }, 10);
+
+            // Remove after 2.5 seconds
+            setTimeout(() => {
+                toast.classList.add('translate-y-10', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        function triggerPrint() {
+            // Set category back to all so that all elements are printed
+            const previousTab = selectedCategory;
+            switchTab('all');
+            
+            // Wait slightly for DOM adjustment
+            setTimeout(() => {
+                window.print();
+                // Restore tab
+                if (previousTab !== 'all') {
+                    switchTab(previousTab);
+                }
+            }, 300);
+        }
+    </script>
+</body>
+</html>
